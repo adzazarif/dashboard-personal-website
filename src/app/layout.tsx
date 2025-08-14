@@ -1,5 +1,7 @@
 import { Outfit } from 'next/font/google';
 import './globals.css';
+import React from 'react';
+import type { Metadata } from 'next';
 
 import { SidebarProvider } from '@/context/SidebarContext';
 import { ThemeProvider } from '@/context/ThemeContext';
@@ -7,6 +9,12 @@ import { ThemeProvider } from '@/context/ThemeContext';
 const outfit = Outfit({
   subsets: ["latin"],
 });
+
+export const metadata: Metadata = {
+  title:
+    "My website - Dashboard",
+  description: "This is Next.js Home for TailAdmin Dashboard Template",
+};
 
 export default function RootLayout({
   children,

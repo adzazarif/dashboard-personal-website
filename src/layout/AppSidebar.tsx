@@ -5,19 +5,12 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import {
-  BoxCubeIcon,
   CalenderIcon,
   ChevronDownIcon,
   GridIcon,
   HorizontaLDots,
-  ListIcon,
-  PageIcon,
-  PieChartIcon,
-  PlugInIcon,
-  TableIcon,
   UserCircleIcon,
 } from "../icons/index";
-import SidebarWidget from "./SidebarWidget";
 
 type NavItem = {
   name: string;
@@ -27,6 +20,61 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
+  {
+    icon: <GridIcon />,
+    name: "Beranda",
+    path: "/dashboard",
+  },
+  {
+    icon: <CalenderIcon />,
+    name: "Peta Pembelajaran",
+    subItems: [
+      { name: "Topik & Skill Saya", path: "/topics-skills", pro: false },
+      { name: "Progress Belajar (Kanban)", path: "/learning-progress", pro: false },
+      { name: "Sumber Belajar (Database)", path: "/learning-resources", pro: false },
+      { name: "Proyek & Latihan", path: "/projects-exercises", pro: false }
+    ],
+  },
+  {
+    icon: <UserCircleIcon />,
+    name: "Produktivitas Harian",
+    subItems: [
+      { name: "Jadwal & Agenda (Kalender)", path: "/schedule-agenda", pro: false },
+      { name: "Daftar Tugas (To-Do List)", path: "/todo-list", pro: false },
+      { name: "Pelacak Kebiasaan (Habit Tracker)", path: "/habit-tracker", pro: false }
+    ],
+  },
+  {
+    icon: <GridIcon />,
+    name: "Jurnal & Catatan",
+    subItems: [
+      { name: "Semua Catatan (Bisa dicari)", path: "/all-notes", pro: false },
+      { name: "Kategori/Topik", path: "/categories-topics", pro: false },
+      { name: "Jurnal Pribadi", path: "/personal-journal", pro: false },
+      { name: "Ide Cepat (Brain Dump)", path: "/quick-ideas", pro: false }
+    ],
+  },
+  {
+    icon: <CalenderIcon />,
+    name: "Tujuan & Visi",
+    subItems: [
+      { name: "Tujuan Saya (Jangka Pendek-Panjang)", path: "/my-goals", pro: false },
+      { name: "Papan Visi (Vision Board)", path: "/vision-board", pro: false }
+    ],
+  },
+  {
+    icon: <UserCircleIcon />,
+    name: "Pengaturan",
+    subItems: [
+      { name: "Profil", path: "/profile", pro: false },
+      { name: "Tampilan (Tema)", path: "/theme-settings", pro: false },
+      { name: "Notifikasi", path: "/notifications", pro: false },
+      { name: "Integrasi", path: "/integrations", pro: false }
+    ],
+  }
+];
+
+const othersItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
@@ -46,38 +94,7 @@ const navItems: NavItem[] = [
     icon: <UserCircleIcon />,
     name: "User Profile",
     path: "/profile",
-  },
-];
-
-const othersItems: NavItem[] = [
-  {
-    icon: <PieChartIcon />,
-    name: "Charts",
-    subItems: [
-      { name: "Line Chart", path: "/line-chart", pro: false },
-      { name: "Bar Chart", path: "/bar-chart", pro: false },
-    ],
-  },
-  {
-    icon: <BoxCubeIcon />,
-    name: "UI Elements",
-    subItems: [
-      { name: "Alerts", path: "/alerts", pro: false },
-      { name: "Avatar", path: "/avatars", pro: false },
-      { name: "Badge", path: "/badge", pro: false },
-      { name: "Buttons", path: "/buttons", pro: false },
-      { name: "Images", path: "/images", pro: false },
-      { name: "Videos", path: "/videos", pro: false },
-    ],
-  },
-  {
-    icon: <PlugInIcon />,
-    name: "Authentication",
-    subItems: [
-      { name: "Sign In", path: "/signin", pro: false },
-      { name: "Sign Up", path: "/signup", pro: false },
-    ],
-  },
+  }
 ];
 
 const AppSidebar: React.FC = () => {
@@ -334,7 +351,7 @@ const AppSidebar: React.FC = () => {
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
+                  "Learning Center"
                 ) : (
                   <HorizontaLDots />
                 )}
@@ -351,7 +368,7 @@ const AppSidebar: React.FC = () => {
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Others"
+                  "Portfolio Web"
                 ) : (
                   <HorizontaLDots />
                 )}
@@ -360,7 +377,6 @@ const AppSidebar: React.FC = () => {
             </div>
           </div>
         </nav>
-        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
       </div>
     </aside>
   );
