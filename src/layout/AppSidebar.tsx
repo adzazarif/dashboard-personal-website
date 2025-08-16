@@ -23,7 +23,7 @@ const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Beranda",
-    path: "/dashboard",
+    path: "/learning-center/dashboard",
   },
   {
     icon: <CalenderIcon />,
