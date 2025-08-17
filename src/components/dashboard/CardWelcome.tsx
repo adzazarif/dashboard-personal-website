@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Target, Quote } from "lucide-react";
+import { Calendar, BookOpen, Trophy, Flame } from "lucide-react";
 
 interface CardWelcomeProps {
   isDarkMode: boolean;
@@ -10,25 +10,78 @@ interface CardWelcomeProps {
 }
 
 export default function CardWelcome({ greeting, currentDay }: CardWelcomeProps) {
-  const [quote, setQuote] = useState("");
+  const [contributionData, setContributionData] = useState<{level: number, date: Date}[]>([]);
   
-  const motivationalQuotes = [
-    "Setiap ahli pernah menjadi pemula. Setiap pro pernah menjadi amatir.",
-    "Investasi terbaik adalah investasi pada diri sendiri.",
-    "Belajar adalah perjalanan seumur hidup yang tidak pernah berakhir."
-  ];
-
+  // Generate mock contribution data with actual dates
   useEffect(() => {
-    // Generate quote only on client side to avoid hydration mismatch
-    const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
-    setQuote(randomQuote);
+    const data = [];
+    const today = new Date();
+    for (let i = 364; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+      data.push({
+        level: Math.floor(Math.random() * 5),
+        date: date
+      });
+    }
+    setContributionData(data);
   }, []);
+
+  const getContributionColor = (level: number) => {
+    const colors = [
+      "bg-gray-200 dark:bg-gray-700", // No activity
+      "bg-green-200 dark:bg-green-900", // Low
+      "bg-green-400 dark:bg-green-700", // Medium
+      "bg-green-600 dark:bg-green-500", // High
+      "bg-green-800 dark:bg-green-400", // Very high
+    ];
+    return colors[level] || colors[0];
+  };
+
+  const getMonthLabels = () => {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    const labels = [];
+    const today = new Date();
+    
+    for (let i = 0; i < 12; i++) {
+      const date = new Date(today.getFullYear(), today.getMonth() - 11 + i, 1);
+      labels.push({
+        month: months[date.getMonth()],
+        position: i * 4.3 // Approximate position
+      });
+    }
+    return labels;
+  };
+
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString('id-ID', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  const getActivityText = (level: number) => {
+    const activities = [
+      'Tidak ada aktivitas',
+      'Aktivitas ringan (1-2 jam)',
+      'Aktivitas sedang (2-4 jam)', 
+      'Aktivitas tinggi (4-6 jam)',
+      'Aktivitas sangat tinggi (6+ jam)'
+    ];
+    return activities[level] || activities[0];
+  };
+
+  const totalDays = contributionData.filter(item => item.level > 0).length;
+  const currentStreak = contributionData.slice(-7).filter(item => item.level > 0).length;
+  const totalHours = contributionData.reduce((sum, item) => sum + item.level, 0) * 2;
 
   return (
     <div className="lg:col-span-12">
       <div className="rounded-lg text-white shadow-theme-xs bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
         <div className="p-8">
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold mb-2">
                 {greeting}, Zarif! 🌟
@@ -37,22 +90,99 @@ export default function CardWelcome({ greeting, currentDay }: CardWelcomeProps) 
                 Semangat untuk hari {currentDay}!
               </p>
             </div>
-            
-            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
-              <div className="flex items-start gap-3">
-                <Quote className="h-5 w-5 text-blue-200 mt-1 flex-shrink-0" />
-                <p className="text-blue-50 italic">{quote || "Memuat kutipan inspiratif..."}</p>
+
+            {/* Contribution Calendar */}
+            <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
+              <div className="flex items-center gap-3 mb-4">
+                <Calendar className="h-5 w-5 text-blue-200" />
+                <span className="font-semibold text-blue-100">Aktivitas Belajar</span>
+                <span className="text-xs text-blue-200 ml-auto">
+                  {totalDays} hari aktif dalam setahun terakhir
+                </span>
+              </div>
+              
+              {/* Month Labels */}
+              <div className="relative mb-2">
+                <div className="flex justify-between text-xs text-blue-200 px-4">
+                  {getMonthLabels().map((label, index) => (
+                    <span key={index}>{label.month}</span>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Calendar Grid - Horizontal */}
+              <div className="overflow-x-auto">
+                <div className="grid grid-rows-7 grid-flow-col gap-1" style={{ gridTemplateColumns: 'repeat(53, minmax(0, 1fr))' }}>
+                  {contributionData.map((item, index) => {
+                    const weekIndex = Math.floor(index / 7);
+                    const dayIndex = index % 7;
+                    return (
+                      <div
+                        key={index}
+                        className={`w-3 h-3 rounded-sm ${getContributionColor(item.level)} hover:ring-2 hover:ring-white/50 transition-all duration-200 cursor-pointer relative group`}
+                        style={{ 
+                          gridRow: dayIndex + 1,
+                          gridColumn: weekIndex + 1
+                        }}
+                      >
+                        {/* Tooltip */}
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap">
+                          <div className="font-semibold">{formatDate(item.date)}</div>
+                          <div>{getActivityText(item.level)}</div>
+                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              
+              {/* Legend */}
+              <div className="flex items-center justify-between mt-4 text-xs text-blue-200">
+                <span>Kurang</span>
+                <div className="flex gap-1">
+                  {[0, 1, 2, 3, 4].map(level => (
+                    <div
+                      key={level}
+                      className={`w-3 h-3 rounded-sm ${getContributionColor(level)}`}
+                    />
+                  ))}
+                </div>
+                <span>Lebih</span>
               </div>
             </div>
-            
-            <div className="bg-white/15 rounded-lg p-4 backdrop-blur-sm">
-              <div className="flex items-center gap-3 mb-2">
-                <Target className="h-5 w-5 text-yellow-300" />
-                <span className="font-semibold text-yellow-100">Fokus Utama Hari Ini</span>
+
+            {/* Summary Statistics */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white/15 rounded-lg p-4 backdrop-blur-sm">
+                <div className="flex items-center gap-3">
+                  <BookOpen className="h-6 w-6 text-yellow-300" />
+                  <div>
+                    <p className="text-2xl font-bold text-white">{totalHours}</p>
+                    <p className="text-yellow-100 text-sm">Jam Belajar</p>
+                  </div>
+                </div>
               </div>
-              <p className="text-white font-medium">
-                Menyelesaikan Bab 3 kursus UI/UX dan membuat wireframe untuk project portfolio
-              </p>
+              
+              <div className="bg-white/15 rounded-lg p-4 backdrop-blur-sm">
+                <div className="flex items-center gap-3">
+                  <Flame className="h-6 w-6 text-orange-300" />
+                  <div>
+                    <p className="text-2xl font-bold text-white">{currentStreak}</p>
+                    <p className="text-orange-100 text-sm">Streak 7 Hari</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white/15 rounded-lg p-4 backdrop-blur-sm">
+                <div className="flex items-center gap-3">
+                  <Trophy className="h-6 w-6 text-green-300" />
+                  <div>
+                    <p className="text-2xl font-bold text-white">{totalDays}</p>
+                    <p className="text-green-100 text-sm">Hari Aktif</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
