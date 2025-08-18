@@ -54,14 +54,7 @@ const navItems: NavItem[] = [
       { name: "Ide Cepat (Brain Dump)", path: "/quick-ideas", pro: false }
     ],
   },
-  {
-    icon: <CalenderIcon />,
-    name: "Tujuan & Visi",
-    subItems: [
-      { name: "Tujuan Saya (Jangka Pendek-Panjang)", path: "/my-goals", pro: false },
-      { name: "Papan Visi (Vision Board)", path: "/vision-board", pro: false }
-    ],
-  },
+
   {
     icon: <UserCircleIcon />,
     name: "Pengaturan",
