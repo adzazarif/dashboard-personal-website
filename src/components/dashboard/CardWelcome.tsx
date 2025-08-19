@@ -79,14 +79,14 @@ export default function CardWelcome({ greeting, currentDay }: CardWelcomeProps) 
 
   return (
     <div className="lg:col-span-12">
-      <div className="rounded-lg text-white shadow-theme-xs bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
+      <div className="rounded-lg text-white shadow-theme-xs dark:bg-gray-800 bg-gray-100">
         <div className="p-8">
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold mb-2">
+              <h2 className="text-2xl font-bold mb-2 dark:text-white text-gray-800">
                 {greeting}, Zarif! 🌟
               </h2>
-              <p className="text-blue-100">
+              <p className="text-gray-600 dark:text-gray-300">
                 Semangat untuk hari {currentDay}!
               </p>
             </div>
@@ -94,16 +94,16 @@ export default function CardWelcome({ greeting, currentDay }: CardWelcomeProps) 
             {/* Contribution Calendar */}
             <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
               <div className="flex items-center gap-3 mb-4">
-                <Calendar className="h-5 w-5 text-blue-200" />
-                <span className="font-semibold text-blue-100">Aktivitas Belajar</span>
-                <span className="text-xs text-blue-200 ml-auto">
+                <Calendar className="h-5 w-5 dark:text-white text-gray-800" />
+                <span className="font-semibold dark:text-white text-gray-800">Aktivitas Belajar</span>
+                <span className="text-xs dark:tekt-white text-gray-800 ml-auto">
                   {totalDays} hari aktif dalam setahun terakhir
                 </span>
               </div>
               
               {/* Month Labels */}
               <div className="relative mb-2">
-                <div className="flex justify-between text-xs text-blue-200 px-4">
+                <div className="flex justify-between text-xs dark:text-white text-gray-800 px-4">
                   {getMonthLabels().map((label, index) => (
                     <span key={index}>{label.month}</span>
                   ))}
@@ -154,32 +154,32 @@ export default function CardWelcome({ greeting, currentDay }: CardWelcomeProps) 
 
             {/* Summary Statistics */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white/15 rounded-lg p-4 backdrop-blur-sm">
+              <div className="dark:bg-white/15 bg-gray-300/50 rounded-lg p-4 backdrop-blur-sm">
                 <div className="flex items-center gap-3">
-                  <BookOpen className="h-6 w-6 text-yellow-300" />
+                  <BookOpen className="h-6 w-6 dark:text-yellow-300 text-yellow-400" />
                   <div>
-                    <p className="text-2xl font-bold text-white">{totalHours}</p>
-                    <p className="text-yellow-100 text-sm">Jam Belajar</p>
+                    <p className="text-2xl font-bold dark:text-white text-gray-800">{totalHours}</p>
+                    <p className="dark:text-yellow-100 text-gray-600 text-sm">Jam Belajar</p>
                   </div>
                 </div>
               </div>
               
-              <div className="bg-white/15 rounded-lg p-4 backdrop-blur-sm">
+              <div className="dark:bg-white/15 bg-gray-300/50 rounded-lg p-4 backdrop-blur-sm">
                 <div className="flex items-center gap-3">
                   <Flame className="h-6 w-6 text-orange-300" />
                   <div>
-                    <p className="text-2xl font-bold text-white">{currentStreak}</p>
-                    <p className="text-orange-100 text-sm">Streak 7 Hari</p>
+                    <p className="text-2xl font-bold dark:text-white text-gray-800">{currentStreak}</p>
+                    <p className="dark:text-white text-gray-600 text-sm">Streak 7 Hari</p>
                   </div>
                 </div>
               </div>
               
-              <div className="bg-white/15 rounded-lg p-4 backdrop-blur-sm">
+              <div className="dark:bg-white/15 bg-gray-300/50 rounded-lg p-4 backdrop-blur-sm">
                 <div className="flex items-center gap-3">
                   <Trophy className="h-6 w-6 text-green-300" />
                   <div>
-                    <p className="text-2xl font-bold text-white">{totalDays}</p>
-                    <p className="text-green-100 text-sm">Hari Aktif</p>
+                    <p className="text-2xl font-bold dark:text-white text-gray-800">{totalDays}</p>
+                    <p className="dark:text-white text-gray-600 text-sm">Hari Aktif</p>
                   </div>
                 </div>
               </div>
